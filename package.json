@@ -1,0 +1,12 @@
+{
+  "name": "non-overlay-publishing",
+  "version": "1.0.0",
+  "description": "模拟非覆盖式发布流程",
+  "main": "index.js",
+  "scripts": {
+    "push": "node ./script/push.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

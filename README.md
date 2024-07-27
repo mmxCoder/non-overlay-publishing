@@ -32,9 +32,20 @@ npm run build
 
 存放 css / js / 图片 等等资源...
 
+> 这个服务需要提供一个上传资源的接口, 用于打包时将资源发送到服务器里面.
+
 ## server 访问的服务器
 
 这里相当于自己的服务器, 用来存在 index.html, 类似于服务器上的 nginx.
 
-
 ## frontProject 前端项目(vue3 + vite)
+
+## script 脚本
+
+- push: 简单的代码推送脚本, 在根目录执行下面的命令将自动推送代码到git
+
+```js
+
+npm run push
+
+```
