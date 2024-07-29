@@ -40,6 +40,8 @@ npm run build
 
 ## frontProject 前端项目(vue3 + vite)
 
+这个前端项目为 vite 初始化项目, 目前没有做任何的修改.
+
 ## script 脚本
 
 - push: 简单的代码推送脚本, 在根目录执行下面的命令将自动推送代码到git
