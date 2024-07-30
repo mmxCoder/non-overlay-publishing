@@ -16,6 +16,8 @@ node index.js
 // cd ./frontProject
 // 打包前端项目
 // 注意: 一定需要前面两个服务运行后才可以打包前端项目
+
+npm i
 npm run build
 
 ```

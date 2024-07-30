@@ -1,4 +1,6 @@
-/frontProject/node_modules
+/*/node_modules
 /frontProject/dist
 /frontProject/dist-ssr
 /frontProject/.vscode/*
+/frontProject/my-vue-app-*
+/frontProject/*.zip
