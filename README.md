@@ -28,6 +28,7 @@ npm run build
 1. assetsServer/public 文件夹下多了一个资源文件夹, 文件夹以打包时间命名, 内容为所有打包的文件.
 这个文件夹内保存所有的历史版本.  
 2. server/public 文件夹下的 **`index.html`** 文件会被更新.
+3. 运行 http://localhost:3001/ 可以看到内部的资源路径都指向了 assetsServer 服务
 
 
 
