@@ -11,8 +11,8 @@ function getName() {
 }
 const __dirname = path.resolve();
 
-// 这里处理一下压缩并将文件发送到服务器
-function compress(name: string, outDir: string) {
+// 这里处理一下, 将文件发送到服务器
+function handleSend(name: string, outDir: string) {
   const dirPath = path.resolve(__dirname, outDir);
   const zipPath = path.resolve(__dirname, `${name}.zip`);
 
@@ -89,7 +89,7 @@ export default defineConfig(({ mode }) => {
   const outDir = "dist/" + name;
 
   return {
-    plugins: [vue(), compress(name, outDir)],
+    plugins: [vue(), handleSend(name, outDir)],
     build: {
       outDir,
     },
