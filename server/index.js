@@ -1,39 +1,34 @@
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
 const path = require("path");
+const fs = require("fs");
 
-const hostname = "127.0.0.1";
-const port = 3000;
-const publicDirectory = path.join(__dirname, "public");
+const app = express();
+const port = 3001;
 
-const server = http.createServer((req, res) => {
-  let filePath = "";
+// 设置静态文件目录
+app.use(express.static(path.join(__dirname, "public")));
 
-  if (req.url === "/") {
-    // 这里简单一点只访问 / => index.html
-    filePath = path.join(publicDirectory, "/index.html");
-  } else {
-    // 其他请求直接拦截
-    res.end("");
-    return;
-  }
+app.use(express.raw({ type: "*/*" }));
 
-  // 根据文件扩展名设置Content-Type
-  const extname = String(path.extname(filePath)).toLowerCase();
-  const mimeTypes = {
-    ".html": "text/html",
-  };
-
-  fs.readFile(filePath, (_, data) => {
-    res.statusCode = 200;
-    res.setHeader(
-      "Content-Type",
-      mimeTypes[extname] || "application/octet-stream"
-    );
-    res.end(data);
-  });
+// 接收 index.html
+app.post("/uploadFile", (req, res) => {
+  fs.writeFile(
+    path.resolve(__dirname, "public/index.html"),
+    req.body,
+    (err) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      res.send({
+        code: 200,
+        message: "成功",
+        data: null,
+      });
+    }
+  );
 });
 
-server.listen(port, hostname, () => {
-  console.log(`访问服务器已启动:  http://${hostname}:${port}/`);
+// 启动服务器
+app.listen(port, () => {
+  console.log(`web容器服务器运行在 http://localhost:${port}`);
 });

@@ -16,23 +16,24 @@ function compress(name: string, outDir: string) {
   const dirPath = path.resolve(__dirname, outDir);
   const zipPath = path.resolve(__dirname, `${name}.zip`);
 
-  // 删除压缩包.
-  const removeZip = () => {
-    fs.rm(zipPath, { force: true }, (err) => {
-      if (err) return console.log("删除文件失败", err);
-      console.log("删除zip文件成功");
-    });
-  };
+  // 发送到资源服务器
+  const sendToAssetsServer = () => {
+    // 删除压缩包.
+    const removeZip = () => {
+      fs.rm(zipPath, { force: true }, (err) => {
+        if (err) return console.log("删除文件失败", err);
+      });
+    };
 
-  return {
-    name: "compress",
-    // 打包结束执行.
-    closeBundle() {
+    return new Promise((resolve, reject) => {
       compressing.zip
         .compressDir(dirPath, zipPath)
-        .then((data) => {
+        .then(() => {
           fs.readFile(zipPath, (err, data) => {
-            if (err) return console.log("读取文件失败", err);
+            if (err) {
+              reject(err);
+              return;
+            }
 
             axios
               .post("http://localhost:3000/uploadAssets", data, {
@@ -41,13 +42,40 @@ function compress(name: string, outDir: string) {
                 },
               })
               .then(() => {
-                console.log("发送成功");
                 removeZip();
+                resolve(true);
               });
           });
         })
         .catch((err) => {
-          console.log("压缩失败", err);
+          reject(err);
+        });
+    });
+  };
+
+  // 发送到访问服务器
+  const sendToServer = () => {
+    return new Promise((resolve, reject) => {
+      const indexHtmlPath = path.resolve(dirPath, "index.html");
+      fs.readFile(indexHtmlPath, (err, data) => {
+        if (err) return reject(err);
+        axios
+          .post("http://localhost:3001/uploadFile", data)
+          .then(resolve, reject);
+      });
+    });
+  };
+
+  return {
+    name: "compress",
+    // 打包结束执行.
+    closeBundle() {
+      Promise.all([sendToAssetsServer(), sendToServer()])
+        .then(() => {
+          console.log("资源已发送成功, 请访问: http://localhost:3001/");
+        })
+        .catch((err) => {
+          console.log("服务执行失败 => ", err);
         });
     },
   };
