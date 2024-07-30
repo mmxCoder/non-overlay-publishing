@@ -72,7 +72,12 @@ function handleSend(name: string, outDir: string) {
     closeBundle() {
       Promise.all([sendToAssetsServer(), sendToServer()])
         .then(() => {
-          console.log("资源已发送成功, 请访问: http://localhost:3001/");
+          console.log("资源已发送成功");
+          console.log(
+            "你可以观察 assetsServer/public 文件夹的内容, 会多出一个打包文件"
+          );
+          console.log("请访问: http://localhost:3001/");
+          console.log("访问后你可以 f12 看一下资源的加载路径");
         })
         .catch((err) => {
           console.log("服务执行失败 => ", err);
